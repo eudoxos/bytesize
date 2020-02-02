@@ -1,7 +1,10 @@
+#pragma once
+
 #include<string>
 #include<regex>
 #include<iomanip>
-#include<stringstream>
+#include<sstream>
+
 namespace bytesize {
 	class bytesize{
 		// number of bytes
@@ -77,11 +80,13 @@ namespace bytesize {
 		bytesize operator"" _PB(unsigned long long int num){ return bytesize((size_t)(1'000'000'000'000L*num)); }
 	}
 }
-// make bytesize::bytesize known to fmt::format
-#include<fmt/format.h>
-template<> struct fmt::formatter<bytesize::bytesize> {
-  template<typename ParseContext> constexpr auto parse(ParseContext &ctx) { return ctx.begin(); }
-  template<typename FormatContext> auto format(const bytesize::bytesize &bs, FormatContext &ctx) { return format_to(ctx.out(),"{}",bs.format()); }
-};
+#ifndef BYTESIZE_NO_FMTLIB
+	// make bytesize::bytesize known to fmt::format
+	#include<fmt/format.h>
+	template<> struct fmt::formatter<bytesize::bytesize> {
+	  template<typename ParseContext> constexpr auto parse(ParseContext &ctx) { return ctx.begin(); }
+	  template<typename FormatContext> auto format(const bytesize::bytesize &bs, FormatContext &ctx) { return format_to(ctx.out(),"{}",bs.format()); }
+	};
+#endif
 
 
