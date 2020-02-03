@@ -55,38 +55,35 @@ namespace bytesize {
 	// separate namespace for using namespace bytesize::literals;
 	namespace literals{
 		// bytes only with integer
-		bytesize operator"" _B(unsigned long long int num){ return bytesize(num); }
+		inline bytesize operator"" _B(unsigned long long int num){ return bytesize(num); }
 		// floating-point numbers, like 5.5_kB
-		bytesize operator"" _kiB(long double num){ return bytesize((size_t)((1L<<10)*num)); }
-		bytesize operator"" _MiB(long double num){ return bytesize((size_t)((1L<<20)*num)); }
-		bytesize operator"" _GiB(long double num){ return bytesize((size_t)((1L<<30)*num)); }
-		bytesize operator"" _TiB(long double num){ return bytesize((size_t)((1L<<40)*num)); }
-		bytesize operator"" _PiB(long double num){ return bytesize((size_t)((1L<<50)*num)); }
-		bytesize operator"" _kB(long double num){ return bytesize((size_t)(1'000L*num)); }
-		bytesize operator"" _MB(long double num){ return bytesize((size_t)(1'000'000L*num)); }
-		bytesize operator"" _GB(long double num){ return bytesize((size_t)(1'000'000'000L*num)); }
-		bytesize operator"" _TB(long double num){ return bytesize((size_t)(1'000'000'000L*num)); }
-		bytesize operator"" _PB(long double num){ return bytesize((size_t)(1'000'000'000'000L*num)); }
+		inline bytesize operator"" _kiB(long double num){ return bytesize((size_t)((1L<<10)*num)); }
+		inline bytesize operator"" _MiB(long double num){ return bytesize((size_t)((1L<<20)*num)); }
+		inline bytesize operator"" _GiB(long double num){ return bytesize((size_t)((1L<<30)*num)); }
+		inline bytesize operator"" _TiB(long double num){ return bytesize((size_t)((1L<<40)*num)); }
+		inline bytesize operator"" _PiB(long double num){ return bytesize((size_t)((1L<<50)*num)); }
+		inline bytesize operator"" _kB(long double num){ return bytesize((size_t)(1'000L*num)); }
+		inline bytesize operator"" _MB(long double num){ return bytesize((size_t)(1'000'000L*num)); }
+		inline bytesize operator"" _GB(long double num){ return bytesize((size_t)(1'000'000'000L*num)); }
+		inline bytesize operator"" _TB(long double num){ return bytesize((size_t)(1'000'000'000L*num)); }
+		inline bytesize operator"" _PB(long double num){ return bytesize((size_t)(1'000'000'000'000L*num)); }
 		// repeated for integer literals so that e.g. 5_kB works
-		bytesize operator"" _kiB(unsigned long long int num){ return bytesize((size_t)((1L<<10)*num)); }
-		bytesize operator"" _MiB(unsigned long long int num){ return bytesize((size_t)((1L<<20)*num)); }
-		bytesize operator"" _GiB(unsigned long long int num){ return bytesize((size_t)((1L<<30)*num)); }
-		bytesize operator"" _TiB(unsigned long long int num){ return bytesize((size_t)((1L<<40)*num)); }
-		bytesize operator"" _PiB(unsigned long long int num){ return bytesize((size_t)((1L<<50)*num)); }
-		bytesize operator"" _kB(unsigned long long int num){ return bytesize((size_t)(1'000L*num)); }
-		bytesize operator"" _MB(unsigned long long int num){ return bytesize((size_t)(1'000'000L*num)); }
-		bytesize operator"" _GB(unsigned long long int num){ return bytesize((size_t)(1'000'000'000L*num)); }
-		bytesize operator"" _TB(unsigned long long int num){ return bytesize((size_t)(1'000'000'000L*num)); }
-		bytesize operator"" _PB(unsigned long long int num){ return bytesize((size_t)(1'000'000'000'000L*num)); }
+		inline bytesize operator"" _kiB(unsigned long long int num){ return bytesize((size_t)((1L<<10)*num)); }
+		inline bytesize operator"" _MiB(unsigned long long int num){ return bytesize((size_t)((1L<<20)*num)); }
+		inline bytesize operator"" _GiB(unsigned long long int num){ return bytesize((size_t)((1L<<30)*num)); }
+		inline bytesize operator"" _TiB(unsigned long long int num){ return bytesize((size_t)((1L<<40)*num)); }
+		inline bytesize operator"" _PiB(unsigned long long int num){ return bytesize((size_t)((1L<<50)*num)); }
+		inline bytesize operator"" _kB(unsigned long long int num){ return bytesize((size_t)(1'000L*num)); }
+		inline bytesize operator"" _MB(unsigned long long int num){ return bytesize((size_t)(1'000'000L*num)); }
+		inline bytesize operator"" _GB(unsigned long long int num){ return bytesize((size_t)(1'000'000'000L*num)); }
+		inline bytesize operator"" _TB(unsigned long long int num){ return bytesize((size_t)(1'000'000'000L*num)); }
+		inline bytesize operator"" _PB(unsigned long long int num){ return bytesize((size_t)(1'000'000'000'000L*num)); }
 	}
 }
-#ifndef BYTESIZE_NO_FMTLIB
-	// make bytesize::bytesize known to fmt::format
-	#include<fmt/format.h>
-	template<> struct fmt::formatter<bytesize::bytesize> {
-	  template<typename ParseContext> constexpr auto parse(ParseContext &ctx) { return ctx.begin(); }
-	  template<typename FormatContext> auto format(const bytesize::bytesize &bs, FormatContext &ctx) { return format_to(ctx.out(),"{}",bs.format()); }
+#define BYTESIZE_FMTLIB_FORMATTER \
+	/* make bytesize::bytesize known to fmt::format */ \
+	template<> struct fmt::formatter<bytesize::bytesize> { \
+	  template<typename ParseContext> constexpr auto parse(ParseContext &ctx) { return ctx.begin(); } \
+	  template<typename FormatContext> auto format(const bytesize::bytesize &bs, FormatContext &ctx) { return format_to(ctx.out(),"{}",bs.format()); } \
 	};
-#endif
-
 
