@@ -14,7 +14,7 @@ namespace bytesize {
 		bytesize(size_t bytes_): bytes(bytes_){}
 		// parse from string
 		static bytesize parse(const std::string& str){
-			std::regex rx("\\s*(\\d+|\\d+[.]|\\d?[.]\\d+)\\s*((|ki|Mi|Gi|Ti|Pi|k|M|G|T|P)[Bb]?)\\s*");
+			const static std::regex rx("\\s*(\\d+|\\d+[.]|\\d?[.]\\d+)\\s*((|ki|Mi|Gi|Ti|Pi|k|M|G|T|P)[Bb]?)\\s*");
 			std::smatch m;
 			if(!std::regex_match(str,m,rx)) throw std::runtime_error("Unable to parse '"+str+"' as size.");
 			double d=std::stod(m[1].str());
